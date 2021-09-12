@@ -4,6 +4,7 @@ from flask_wtf import FlaskForm
 from wtforms import StringField, SubmitField
 from wtforms.validators import DataRequired
 import configparser
+import forms
 
 config = configparser.ConfigParser()
 config.read("config.ini")
@@ -15,7 +16,8 @@ print(config["APP"]["SECRET_KEY"])
 
 @app.route('/')
 def hello_world():
-    return 'Hello World!'
+    form = forms.SignUpForm()
+    return render_template("entry.html", form=form, page={"title": "Sign in"})
 
 
 if __name__ == '__main__':
