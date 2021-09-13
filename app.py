@@ -33,7 +33,7 @@ def sign_in():
     return render_template("entry.html", form=form, page={"title": "Sign in"})
 
 
-@app.route('/register')
+@app.route('/register', methods=['GET'])
 def register():
     form = forms.SignUpForm()
     return render_template("entry.html", form=form, page={"title": "Sign up"})
@@ -44,9 +44,6 @@ def log():
     form = forms.LogForm()
     if form.validate():
         print('hello')
-        return 'nice'
-    else:
-        print('uh oh!')
     return render_template("log.html", form=form)
 
 if __name__ == '__main__':

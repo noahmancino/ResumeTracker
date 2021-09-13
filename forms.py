@@ -17,8 +17,9 @@ class SignInForm(FlaskForm):
 
 
 class LogForm(FlaskForm):
-    date = DateField('Date: Year-Month-Day', default=date.today(), validators=[DataRequired()])
-    company = StringField('Company')
-    position = StringField('Position')
+    date = DateField('Date: Year-Month-Day', default=date.today(),
+                     validators=[DataRequired(message='Invalid date format')])
+    company = StringField('Company', validators=[DataRequired()])
+    position = StringField('Position', validators=[DataRequired()])
     location = StringField('Location')
     submit = SubmitField('Save')
