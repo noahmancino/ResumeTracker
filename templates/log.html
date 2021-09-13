@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+{% block content %}
+
+<h2 style="text-align: center"> Log Your New Application </h2>
+
+<form action="" method="post">
+    <p style="text-align:center">
+        {{ form.date.label }} <br>
+        {{ form.date() }}
+    </p>
+    <p style="text-align:center">
+        {{ form.company.label }} <br>
+        {{ form.company(size=30) }}
+    </p>
+    <p style="text-align:center">
+        {{ form.position.label }} <br>
+        {{ form.position(size=30) }}
+    </p>
+    <p style="text-align:center">
+        {{ form.location.label }} <br>
+        {{ form.location(size=30) }}
+    </p>
+    <p style="text-align: center">{{ form.submit() }}</p>
+</form>
+
+{% endblock %}
