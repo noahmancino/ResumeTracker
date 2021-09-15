@@ -1,7 +1,5 @@
-import forms
 from applicationtracker import app
-import applicationtracker.forms
-import applicationtracker.models
+import applicationtracker.forms as forms
 from flask import render_template
 
 

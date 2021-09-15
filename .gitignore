@@ -1,4 +1,4 @@
 # Project exclude paths
 /venv/
-applicationtracker/config.ini
+config.ini
 site.db
