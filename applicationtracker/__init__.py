@@ -1,7 +1,6 @@
-from flask import Flask, render_template
+from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 import configparser
-import forms
 
 config = configparser.ConfigParser()
 config.read("config.ini")

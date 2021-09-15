@@ -1,3 +1,8 @@
+import forms
+from applicationtracker import app
+import applicationtracker.forms
+import applicationtracker.models
+from flask import render_template
 
 
 @app.route('/')
