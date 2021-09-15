@@ -1,5 +1,5 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, PasswordField, SubmitField, DateField
+from wtforms import StringField, PasswordField, SubmitField, DateField, SelectField
 from datetime import date
 from wtforms.validators import DataRequired
 
@@ -21,5 +21,12 @@ class LogForm(FlaskForm):
                      validators=[DataRequired(message='Invalid date format')])
     company = StringField('Company', validators=[DataRequired()])
     position = StringField('Position', validators=[DataRequired()])
-    location = StringField('Location')
+    location = StringField('Location', validators=[DataRequired()])
+    submit = SubmitField('Save')
+
+
+class ViewForm(FlaskForm):
+    time = SelectField('How long would you like this log to capture?',
+                       choices=['1 month', '3 months', '6 months', '1 year', 'All applications'],
+                       validators=[DataRequired()])
     submit = SubmitField('Save')
