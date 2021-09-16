@@ -13,5 +13,7 @@ app.config["SQLALCHEMY_DATABASE_URI"] = config["DATABASE"]["URI"]
 db = SQLAlchemy(app)
 bcrypt = Bcrypt(app)
 login_manager = LoginManager(app)
+login_manager.login_view = 'sign_in'
+login_manager.login_message_category = 'info'
 
 import applicationtracker.routes

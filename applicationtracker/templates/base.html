@@ -17,14 +17,13 @@
           <li class="nav-item">
             <a class="nav-link text-light" href="{{ url_for('sign_in') }}">Sign In</a>
           </li>
-        {% endif %}
-      <li class="nav-item">
-        <a class="nav-link text-light" href="{{ url_for('log') }}"> Log Applications </a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link text-light" href="{{ url_for('view') }}">View Applications</a>
-      </li>
-        {% if current_user.is_authenticated %}
+        {% else %}
+          <li class="nav-item">
+            <a class="nav-link text-light" href="{{ url_for('log') }}"> Log Applications </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link text-light" href="{{ url_for('view') }}">View Applications</a>
+          </li>
           <li class="nav-item dropdown">
             <a class="nav-link dropdown-toggle text-light" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
             </a>

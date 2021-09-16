@@ -5,8 +5,8 @@ from wtforms.validators import DataRequired, Length
 from applicationtracker.models import User
 
 class SignUpForm(FlaskForm):
-    username = StringField('Username', validators=[DataRequired()])
-    password = PasswordField('Password', validators=[DataRequired(), Length(min=1)])
+    username = StringField('Username', validators=[DataRequired(), Length(max=25)])
+    password = PasswordField('Password', validators=[DataRequired()])
     submit = SubmitField('Sign up')
 
     def validate_username(self, username):
@@ -23,9 +23,9 @@ class SignInForm(FlaskForm):
 class LogForm(FlaskForm):
     date = DateField('Date: Year-Month-Day', default=date.today(),
                      validators=[DataRequired(message='Invalid date format')])
-    company = StringField('Company', validators=[DataRequired()])
-    position = StringField('Position', validators=[DataRequired()])
-    location = StringField('Location', validators=[DataRequired()])
+    company = StringField('Company', validators=[DataRequired(), Length(max=75)])
+    position = StringField('Position', validators=[DataRequired(), Length(max=75)])
+    location = StringField('Location', validators=[DataRequired(), Length(max=75)])
     submit = SubmitField('Save')
 
 

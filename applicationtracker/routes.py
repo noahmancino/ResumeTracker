@@ -1,8 +1,9 @@
 from applicationtracker import app, db, bcrypt, login_manager
-from flask_login import login_user, current_user, logout_user
+from flask_login import login_user, current_user, logout_user, login_required
 import applicationtracker.forms as forms
 from applicationtracker.models import User, Application
 from flask import render_template, flash, redirect, url_for
+from datetime import date
 
 
 @app.route('/')
@@ -16,7 +17,7 @@ def home_route():
 @app.route('/sign-in', methods=['GET', 'POST'])
 def sign_in():
     if current_user.is_authenticated:
-        flash("you are already logged in", "success")
+        flash("You are already logged in", "success")
         return redirect(url_for('log'))
 
     form = forms.SignInForm()
@@ -24,7 +25,7 @@ def sign_in():
         user = User.query.filter_by(username=form.username.data).first()
         if user and bcrypt.check_password_hash(user.password, form.password.data):
             login_user(user)
-            flash("succesful login", "success")
+            flash("Successful login", "success")
             return redirect(url_for('home_route'))
         else:
             flash('Could not find that username password combination', 'danger')
@@ -34,8 +35,8 @@ def sign_in():
 
 @app.route('/register', methods=['GET', 'POST'])
 def register():
-    if current_user.is_autheticated():
-        flash("you are already logged in", "success")
+    if current_user.is_authenticated:
+        flash("You are already logged in", "success")
         return redirect(url_for('log'))
 
     form = forms.SignUpForm()
@@ -50,14 +51,18 @@ def register():
 
 
 @app.route('/log', methods=['GET', 'POST'])
+@login_required
 def log():
     form = forms.LogForm()
     if form.validate_on_submit():
-        flash('application saved', 'success')
+        application = Application(date=form.date.data, location=form.location.data, position=form.position.data,
+                                  company=form.company.data)
+        flash('Application saved', 'success')
     return render_template("log.html", form=form)
 
 
 @app.route('/view', methods=['GET', 'POST'])
+@login_required
 def view():
     form = forms.ViewForm()
     if form.validate_on_submit():
@@ -69,4 +74,5 @@ def view():
 @app.route('/logout')
 def logout():
     logout_user()
+    flash('Logged out', 'success')
     return redirect(url_for('home_route'))
