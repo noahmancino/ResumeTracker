@@ -1,6 +1,7 @@
-from applicationtracker import app
+from applicationtracker import app, db, bcrypt
 import applicationtracker.forms as forms
-from flask import render_template
+from applicationtracker.models import User, Application
+from flask import render_template, flash, redirect, url_for
 
 
 @app.route('/')
@@ -15,29 +16,36 @@ def home_route():
     return render_template("entry.html", form=form, page={"title": "Sign in"})
 
 
-@app.route('/sign-in')
+@app.route('/sign-in', methods=['GET', 'POST'])
 def sign_in():
     form = forms.SignInForm()
     return render_template("entry.html", form=form, page={"title": "Sign in"})
 
 
-@app.route('/register', methods=['GET'])
+@app.route('/register', methods=['GET', 'POST'])
 def register():
     form = forms.SignUpForm()
+    if form.validate_on_submit():
+        hashed = bcrypt.generate_password_hash(form.password.data).decode('utf-8')
+        user = User(username=form.username.data, password=hashed)
+        db.session.add(user)
+        db.session.commit()
+        flash('Your registration was successful, you may now log in', 'success')
+        return redirect(url_for('sign_in'))
     return render_template("entry.html", form=form, page={"title": "Sign up"})
 
 
 @app.route('/log', methods=['GET', 'POST'])
 def log():
     form = forms.LogForm()
-    if form.validate():
-        print('hello')
+    if form.validate_on_submit():
+        flash('application saved', 'success')
     return render_template("log.html", form=form)
 
 
 @app.route('/view', methods=['GET', 'POST'])
 def view():
     form = forms.ViewForm()
-    if form.validate():
-        print('hello')
+    if form.validate_on_submit():
+        pass
     return render_template("view.html", form=form)
