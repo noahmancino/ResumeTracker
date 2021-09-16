@@ -10,25 +10,29 @@
 
     <title>Resume Tracker</title>
     <ul class="nav justify-content-center bg-dark">
+        {% if not current_user.is_authenticated %}
+          <li class="nav-item">
+            <a class="nav-link text-light" href="{{ url_for('register') }}">Sign Up</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link text-light" href="{{ url_for('sign_in') }}">Sign In</a>
+          </li>
+        {% endif %}
       <li class="nav-item">
-        <a class="nav-link text-light" href="register">Sign Up</a>
+        <a class="nav-link text-light" href="{{ url_for('log') }}"> Log Applications </a>
       </li>
       <li class="nav-item">
-        <a class="nav-link text-light" href="sign-in">Sign In</a>
+        <a class="nav-link text-light" href="{{ url_for('view') }}">View Applications</a>
       </li>
-      <li class="nav-item">
-        <a class="nav-link text-light" href="log">Log Applications</a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link text-light" href="view">View Applications</a>
-      </li>
-      <li class="nav-item dropdown">
-        <a class="nav-link dropdown-toggle text-light" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-        </a>
-        <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-          <a class="dropdown-item" href="#">Action</a>
-        </div>
-      </li>
+        {% if current_user.is_authenticated %}
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle text-light" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            </a>
+              <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                  <a class="dropdown-item" href="{{ url_for('logout') }}">logout</a>
+            </div>
+          </li>
+         {% endif %}
     </ul>
   </head>
   <body>

@@ -1,5 +1,5 @@
 from applicationtracker import app, db, bcrypt, login_manager
-from flask_login import login_user
+from flask_login import login_user, current_user, logout_user
 import applicationtracker.forms as forms
 from applicationtracker.models import User, Application
 from flask import render_template, flash, redirect, url_for
@@ -7,23 +7,24 @@ from flask import render_template, flash, redirect, url_for
 
 @app.route('/')
 def home_route():
-    '''
     if current_user.is_authenticated:
-         return render_template("main_for_user.html")
+         return redirect(url_for("log"))
     else:
-         return render_template("main_for_anonymous.html")
-    '''
-    form = forms.SignUpForm()
-    return render_template("entry.html", form=form, page={"title": "Sign in"})
+         return redirect(url_for("register"))
 
 
 @app.route('/sign-in', methods=['GET', 'POST'])
 def sign_in():
+    if current_user.is_authenticated:
+        flash("you are already logged in", "success")
+        return redirect(url_for('log'))
+
     form = forms.SignInForm()
     if form.validate_on_submit():
         user = User.query.filter_by(username=form.username.data).first()
         if user and bcrypt.check_password_hash(user.password, form.password.data):
-            login_user(user, remember=form.remember.data)
+            login_user(user)
+            flash("succesful login", "success")
             return redirect(url_for('home_route'))
         else:
             flash('Could not find that username password combination', 'danger')
@@ -33,6 +34,10 @@ def sign_in():
 
 @app.route('/register', methods=['GET', 'POST'])
 def register():
+    if current_user.is_autheticated():
+        flash("you are already logged in", "success")
+        return redirect(url_for('log'))
+
     form = forms.SignUpForm()
     if form.validate_on_submit():
         hashed = bcrypt.generate_password_hash(form.password.data).decode('utf-8')
@@ -58,3 +63,10 @@ def view():
     if form.validate_on_submit():
         pass
     return render_template("view.html", form=form)
+
+
+#TODO: logging out typically uses post requests, the logout link might get prefetched by browser
+@app.route('/logout')
+def logout():
+    logout_user()
+    return redirect(url_for('home_route'))
