@@ -56,8 +56,11 @@ def log():
     form = forms.LogForm()
     if form.validate_on_submit():
         application = Application(date=form.date.data, location=form.location.data, position=form.position.data,
-                                  company=form.company.data)
+                                  company=form.company.data, applicant=current_user)
+        db.session.add(application)
+        db.session.commit()
         flash('Application saved', 'success')
+        return redirect(url_for('log'))
     return render_template("log.html", form=form)
 
 
