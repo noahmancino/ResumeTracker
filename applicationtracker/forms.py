@@ -31,6 +31,7 @@ class LogForm(FlaskForm):
 
 class ViewForm(FlaskForm):
     time = SelectField('How long would you like this log to capture?',
-                       choices=['1 month', '3 months', '6 months', '1 year', 'All applications'],
+                       choices=[('1', '1 month'), ('3', '3 months'), ('6', '6 months'), ('12', '1 year'),
+                                ('0', 'All applications')],
                        validators=[DataRequired()])
     submit = SubmitField('Save')

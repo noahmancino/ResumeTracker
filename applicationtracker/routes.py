@@ -69,7 +69,7 @@ def log():
 def view():
     form = forms.ViewForm()
     if form.validate_on_submit():
-        pass
+        print('dated, baby')
     return render_template("view.html", form=form)
 
 
