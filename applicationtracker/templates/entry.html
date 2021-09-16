@@ -7,6 +7,11 @@
     <p style="text-align:center">
         {{ form.username.label }} <br>
         {{ form.username(size=30) }}
+        {% if form.errors.username is not none %}
+           <br> {{ form.errors.username | first }} <br>
+        {% else %}
+            NONE
+        {% endif %}
     </p>
     <p style="text-align:center">
         {{ form.password.label }} <br>

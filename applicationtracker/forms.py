@@ -1,13 +1,17 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, PasswordField, SubmitField, DateField, SelectField
+from wtforms import StringField, PasswordField, SubmitField, DateField, SelectField, ValidationError
 from datetime import date
 from wtforms.validators import DataRequired, Length
-
+from applicationtracker.models import User
 
 class SignUpForm(FlaskForm):
     username = StringField('Username', validators=[DataRequired()])
     password = PasswordField('Password', validators=[DataRequired(), Length(min=1)])
     submit = SubmitField('Sign up')
+
+    def validate_username(self, username):
+        if User.query.filter_by(username=username.data).first() is not None:
+            raise ValidationError("Someone else already has that username")
 
 
 class SignInForm(FlaskForm):
