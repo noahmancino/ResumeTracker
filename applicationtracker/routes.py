@@ -4,6 +4,7 @@ import applicationtracker.forms as forms
 from applicationtracker.models import User, Application
 from flask import render_template, flash, redirect, url_for
 from datetime import date
+import pandas as pd
 
 
 @app.route('/')
@@ -67,9 +68,23 @@ def log():
 @app.route('/view', methods=['GET', 'POST'])
 @login_required
 def view():
+    def diff_month(d1, d2):
+        print(type(d2))
+        return (d1.year - d2.year) * 12 + d1.month - d2.month
+
     form = forms.ViewForm()
     if form.validate_on_submit():
-        print('dated, baby')
+        time_delta = form.time.data
+        applications = db.session.query(Application).filter(Application.applicant == current_user)
+        applications = pd.read_sql(applications.statement, db.session.bind)
+        applications.drop('user_id', inplace=True, axis=1)
+        applications['time_delta'] = applications['date'].apply(lambda x: diff_month(date.today(), x))
+        applications.drop('date', inplace=True, axis=1)
+        if time_delta != 'all':
+            applications = applications[applications.time_delta <= int(time_delta)]
+
+        print(applications)
+
     return render_template("view.html", form=form)
 
 
