@@ -3,3 +3,4 @@
 config.ini
 applicationtracker/site.db
 applicationtracker/__pycache__
+applicationtracker/temp_files/*

@@ -2,10 +2,10 @@ from applicationtracker import app, db, bcrypt, login_manager
 from flask_login import login_user, current_user, logout_user, login_required
 import applicationtracker.forms as forms
 from applicationtracker.models import User, Application
-from flask import render_template, flash, redirect, url_for
+from flask import render_template, flash, redirect, url_for, send_file
 from datetime import date
 import pandas as pd
-
+import webbrowser
 
 @app.route('/')
 def home_route():
@@ -69,7 +69,6 @@ def log():
 @login_required
 def view():
     def diff_month(d1, d2):
-        print(type(d2))
         return (d1.year - d2.year) * 12 + d1.month - d2.month
 
     form = forms.ViewForm()
@@ -79,11 +78,13 @@ def view():
         applications = pd.read_sql(applications.statement, db.session.bind)
         applications.drop('user_id', inplace=True, axis=1)
         applications['time_delta'] = applications['date'].apply(lambda x: diff_month(date.today(), x))
-        applications.drop('date', inplace=True, axis=1)
+        applications.drop('id', inplace=True, axis=1)
+        applications.sort_values(by=['date'])
         if time_delta != 'all':
             applications = applications[applications.time_delta <= int(time_delta)]
-
-        print(applications)
+        applications.drop('time_delta', inplace=True, axis=1)
+        #TODO: additional validation of usernames may be required if I really want to do this
+        return applications.to_html()
 
     return render_template("view.html", form=form)
 
