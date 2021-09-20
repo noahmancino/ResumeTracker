@@ -2,10 +2,10 @@ from applicationtracker import app, db, bcrypt, login_manager
 from flask_login import login_user, current_user, logout_user, login_required
 import applicationtracker.forms as forms
 from applicationtracker.models import User, Application
-from flask import render_template, flash, redirect, url_for, send_file
+from flask import render_template, flash, redirect, url_for
 from datetime import date
 import pandas as pd
-import webbrowser
+
 
 @app.route('/')
 def home_route():
