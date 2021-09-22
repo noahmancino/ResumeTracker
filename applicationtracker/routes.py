@@ -83,7 +83,6 @@ def view():
         if time_delta != 'all':
             applications = applications[applications.time_delta <= int(time_delta)]
         applications.drop('time_delta', inplace=True, axis=1)
-        #TODO: additional validation of usernames may be required if I really want to do this
         return applications.to_html()
 
     return render_template("view.html", form=form)
