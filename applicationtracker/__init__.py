@@ -11,7 +11,7 @@ config.read("config.ini")
 
 app = Flask(__name__)
 app.config["SECRET_KEY"] = os.getenv('APP_SECRET_KEY', 'default')
-app.config["SQLALCHEMY_DATABASE_URI"] = os.getenv('DATABASE_URL')
+app.config["SQLALCHEMY_DATABASE_URI"] = os.getenv('DATABASE_URL', 'noooo!')
 db = SQLAlchemy(app)
 db.create_all()
 print(app.config["SQLALCHEMY_DATABASE_URI"])
@@ -21,7 +21,3 @@ login_manager.login_view = 'sign_in'
 login_manager.login_message_category = 'info'
 
 import applicationtracker.routes
-
-
-def getApp():
-    return app
