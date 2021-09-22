@@ -21,5 +21,6 @@ login_manager.login_message_category = 'info'
 
 import applicationtracker.routes
 
+
 def getApp():
     return app
